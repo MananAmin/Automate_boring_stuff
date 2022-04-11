@@ -55,13 +55,23 @@ class RSA:
             p = p*p
         return result
 
+    def powmod(self,x,y,mod):
+            result=1
+            p = x%mod
+            while y>0:
+                if y%2==1:
+                    result= (result*p)%mod
+                y = y//2
+                p = (p*p)%mod
+            return result
+
     def encrypt(self,msg):
         if msg >=self.p* self.q:
             raise Exception("Number should be less than p*q")
-        return self.pow(msg,self.pub_keys[0])%self.pub_keys[1]
+        return self.powmod(msg,self.pub_keys[0],self.pub_keys[1])
     
     def decrpt(self,ct):
-        return self.pow(c,self.pvt_keys[0])%self.pvt_keys[1]
+        return self.powmod(ct,self.pvt_keys[0],self.pvt_keys[1])
 
 if __name__=="__main__":
     # User should enter valid prime otherwise it will result in bed algorithm
